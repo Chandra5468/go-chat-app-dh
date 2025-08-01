@@ -5,6 +5,7 @@ import (
 
 	"github.com/Chandra5468/go-chat-app-dh/db"
 	"github.com/Chandra5468/go-chat-app-dh/internal/users"
+	"github.com/Chandra5468/go-chat-app-dh/router"
 )
 
 type x struct {
@@ -18,5 +19,10 @@ func main() {
 	// db := dbConn.GetDb()
 
 	// xy := &x{}
-	users.NewRepository(dbConn.GetDb())
+	userRepo := users.NewRepository(dbConn.GetDb())
+	userSrv := users.NewService(userRepo)
+	userHandler := users.NewHandler(userSrv)
+
+	router.InitRouter(userHandler)
+	router.Start("localhost:8000")
 }
